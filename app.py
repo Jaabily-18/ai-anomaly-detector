@@ -12,8 +12,8 @@ load_dotenv()
 st.set_page_config(page_title="AI Data Monitor", layout="wide")
 st.title("Anomaly Detection & Business Insight Agent")
 
-# Initialize Gemini Client
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+api_key = st.secrets.get("GEMINI_API_KEY") if hasattr(st, "secrets") and "GEMINI_API_KEY" in st.secrets else os.getenv("GEMINI_API_KEY")
+client = genai.Client(api_key=api_key)
 
 # Initialize session memory for AI insights
 if "ai_insights" not in st.session_state:
@@ -103,7 +103,7 @@ if uploaded_file is not None:
                     """
                     
                     response = client.models.generate_content(
-                        model="gemini-3.6-flash",
+                        model="gemini-2.5-flash",
                         contents=prompt
                     )
                     
